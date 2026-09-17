@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JWT Inspector</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#08090c;color:#e7e9ee;font:14px ui-monospace,SFMono-Regular,Consolas,monospace;min-height:100vh}main{max-width:1100px;margin:auto;padding:32px 18px}h1{font-size:24px;margin:0 0 8px}.sub{color:#858b98;margin-bottom:22px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:800px){.grid{grid-template-columns:1fr}}section{border:1px solid #252a33;background:#0d1015;border-radius:12px;padding:16px}textarea{width:100%;min-height:210px;resize:vertical;background:#080a0e;color:#dfe5ee;border:1px solid #292f3a;border-radius:8px;padding:12px;font:inherit;outline:none}button{margin-top:10px;padding:10px 14px;border:1px solid #343b48;border-radius:8px;background:#151a22;color:#fff;cursor:pointer}pre{white-space:pre-wrap;overflow:auto;color:#b9f3c5}.err{color:#ff8d8d}.tag{display:inline-block;color:#8e98aa;font-size:12px;margin-bottom:8px}.wm{position:fixed;right:6px;bottom:3px;opacity:.018;user-select:none}
+</style></head>
+<body><main><h1>JWT Inspector</h1><div class="sub">Decode a JWT locally. Nothing is uploaded or transmitted.</div>
+<section><div class="tag">TOKEN</div><textarea id="token" placeholder="eyJhbGciOi...paste JWT here"></textarea><button id="decode">Decode</button></section>
+<div class="grid" style="margin-top:14px"><section><div class="tag">HEADER</div><pre id="header">—</pre></section><section><div class="tag">PAYLOAD</div><pre id="payload">—</pre></section></div>
+<section style="margin-top:14px"><div class="tag">SIGNATURE</div><pre id="signature">—</pre></section></main><div class="wm">guns.lol/meduu</div>
+<script>
+const $=id=>document.getElementById(id);function b64(s){s=s.replace(/-/g,'+').replace(/_/g,'/');s+='='.repeat((4-s.length%4)%4);const bin=atob(s);return decodeURIComponent([...bin].map(c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0')).join(''))}function out(id,v){$(id).textContent=typeof v==='string'?v:JSON.stringify(v,null,2)}function decode(){out('header','—');out('payload','—');out('signature','—');const t=$('token').value.trim();try{const p=t.split('.');if(p.length!==3)throw Error('A JWT must contain three dot-separated parts.');out('header',JSON.parse(b64(p[0])));const payload=JSON.parse(b64(p[1]));out('payload',payload);out('signature',p[2]);}catch(e){out('payload','Error: '+e.message)}}$('decode').onclick=decode;$('token').addEventListener('input',()=>{if(!$('token').value.trim()){out('header','—');out('payload','—');out('signature','—')}});
+</script></body></html>
+
+<!-- by guns.lol/meduu -->
